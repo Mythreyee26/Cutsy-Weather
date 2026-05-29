@@ -1,0 +1,30 @@
+# 🌸 Cutsy Weather — .gitignore
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Build / release artifacts
+*.zip
+dist/
+build/
+
+# Logs
+*.log
+
+# Node (in case someone adds tooling later)
+node_modules/
+
+# Local environment / secrets (defensive — none should ever exist here,
+# since keys live in chrome.storage on each user's machine)
+.env
+.env.*
+secrets.json
+api-key.txt

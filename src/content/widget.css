@@ -1,0 +1,422 @@
+/* 🌸 widget.css — all the visual loveliness of Cutsy Weather
+   Scoped under #cutsy-weather-root so host pages don't bleed in. */
+
+#cutsy-weather-root {
+  all: initial;
+  font-family: "Quicksand", "Nunito", "Comic Sans MS", system-ui, sans-serif;
+}
+
+#cutsy-weather-root * {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   THE WIDGET CARD
+   ========================================================= */
+
+/* ---- Minimalist palette --------------------------------------------------
+   light → warm cream/white with dusty rose accent
+   dark  → soft near-black with same rose accent (slightly brighter)
+   no per-weather background noise — weather shown via emoji + text only. */
+#cutsy-weather-widget {
+  --cutsy-bg: #FFFFFF;
+  --cutsy-text: #1F1D22;
+  --cutsy-subtext: #76707A;
+  --cutsy-accent: #E89F95;
+  --cutsy-border: rgba(0, 0, 0, 0.06);
+  --cutsy-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 240px;
+  padding: 14px 14px 12px;
+  border-radius: 18px;
+  background: var(--cutsy-bg);
+  border: 1px solid var(--cutsy-border);
+  box-shadow: var(--cutsy-shadow);
+  color: var(--cutsy-text);
+  font-size: 13px;
+  line-height: 1.35;
+  z-index: 2147483646;
+  user-select: none;
+  overflow: hidden;
+  isolation: isolate;
+  animation: cutsy-fade-in 0.7s cubic-bezier(.2,.8,.2,1) both;
+  transition:
+    transform 0.25s cubic-bezier(.2,.8,.2,1),
+    box-shadow 0.25s ease;
+}
+
+/* No background overlays — kept blank to silence the per-weather gradient
+   that JS still sets on --cutsy-gradient (unused now). */
+#cutsy-weather-widget::before,
+#cutsy-weather-widget::after {
+  content: none;
+}
+
+#cutsy-weather-widget:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+#cutsy-weather-widget.cutsy-dragging {
+  transition: none;
+  cursor: grabbing;
+  transform: scale(1.02);
+}
+
+/* Dark theme — soft near-black with same rose accent */
+#cutsy-weather-widget[data-theme="dark"] {
+  --cutsy-bg: #1A171D;
+  --cutsy-text: #F0EAEC;
+  --cutsy-subtext: #9089A0;
+  --cutsy-accent: #F4B6B6;
+  --cutsy-border: rgba(255, 255, 255, 0.08);
+  --cutsy-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+#cutsy-weather-widget[data-theme="dark"]:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.cutsy-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: grab;
+  padding-bottom: 8px;
+}
+.cutsy-header:active { cursor: grabbing; }
+
+.cutsy-mascot {
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(.2,.8,.2,1);
+  flex-shrink: 0;
+}
+.cutsy-mascot:hover {
+  transform: translateY(-3px) rotate(-4deg) scale(1.08);
+}
+
+.cutsy-header-text {
+  flex: 1;
+  min-width: 0;
+}
+.cutsy-city {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--cutsy-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cutsy-condition {
+  font-size: 11.5px;
+  color: var(--cutsy-subtext);
+  margin-top: 1px;
+}
+
+.cutsy-buttons {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.cutsy-btn {
+  all: unset;
+  cursor: pointer;
+  font-size: 12px;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid var(--cutsy-border);
+  border-radius: 8px;
+  padding: 3px 6px;
+  line-height: 1;
+  transition: transform 0.15s, background 0.2s;
+}
+.cutsy-btn:hover {
+  transform: scale(1.1);
+  background: rgba(232, 159, 149, 0.12);  /* rose accent tint */
+}
+[data-theme="dark"] .cutsy-btn {
+  background: rgba(255,255,255,0.05);
+}
+[data-theme="dark"] .cutsy-btn:hover {
+  background: rgba(244, 182, 182, 0.15);
+}
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+.cutsy-body { animation: cutsy-soft-in 0.5s ease both; }
+
+.cutsy-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0 8px;
+}
+.cutsy-temp {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--cutsy-text);
+}
+.cutsy-emoji {
+  font-size: 34px;
+  animation: cutsy-float 4s ease-in-out infinite;
+}
+
+.cutsy-mood {
+  font-size: 11.5px;
+  font-style: italic;
+  color: var(--cutsy-subtext);
+  margin-bottom: 8px;
+  text-align: center;
+  min-height: 1.2em;
+}
+
+.cutsy-meta {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid var(--cutsy-border);
+  border-radius: 12px;
+  padding: 6px 8px;
+}
+[data-theme="dark"] .cutsy-meta {
+  background: rgba(255,255,255,0.04);
+}
+.cutsy-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cutsy-text);
+}
+.cutsy-meta-icon { font-size: 13px; }
+
+/* =========================================================
+   FORECAST POPOUT
+   ========================================================= */
+
+.cutsy-forecast {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--cutsy-border);
+  animation: cutsy-soft-in 0.35s ease both;
+}
+.cutsy-forecast-title {
+  font-size: 11px;
+  text-align: center;
+  color: var(--cutsy-subtext);
+  margin-bottom: 6px;
+}
+.cutsy-forecast-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.cutsy-forecast-row::-webkit-scrollbar { display: none; }
+.cutsy-forecast-cell {
+  flex-shrink: 0;
+  width: 46px;
+  text-align: center;
+  background: rgba(0,0,0,0.03);
+  border-radius: 10px;
+  padding: 5px 2px;
+  border: 1px solid var(--cutsy-border);
+}
+[data-theme="dark"] .cutsy-forecast-cell {
+  background: rgba(255,255,255,0.04);
+}
+.cutsy-forecast-hour { font-size: 10px; color: var(--cutsy-subtext); }
+.cutsy-forecast-emoji { font-size: 16px; margin: 2px 0; }
+.cutsy-forecast-temp { font-size: 11px; font-weight: 700; color: var(--cutsy-text); }
+.cutsy-forecast-loading {
+  font-size: 11px;
+  color: var(--cutsy-subtext);
+  text-align: center;
+  width: 100%;
+}
+
+/* =========================================================
+   FALLBACK
+   ========================================================= */
+
+.cutsy-fallback {
+  text-align: center;
+  padding: 8px 4px 4px;
+  animation: cutsy-soft-in 0.5s ease both;
+}
+.cutsy-fallback-emoji {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+.cutsy-fallback-msg {
+  font-size: 12px;
+  color: var(--cutsy-text);
+  margin-bottom: 8px;
+}
+.cutsy-retry-btn {
+  all: unset;
+  cursor: pointer;
+  font-size: 11px;
+  background: var(--cutsy-accent);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 5px 12px;
+  color: white;
+  font-weight: 700;
+  transition: transform 0.15s, opacity 0.2s;
+}
+.cutsy-retry-btn:hover { transform: scale(1.05); opacity: 0.9; }
+
+/* =========================================================
+   PARTICLES — drifting cute glyphs
+   ========================================================= */
+
+.cutsy-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.cutsy-particle {
+  position: absolute;
+  bottom: -20px;
+  font-size: 12px;
+  animation: cutsy-particle-up linear forwards;
+  will-change: transform, opacity;
+  opacity: 0.5;
+}
+
+@keyframes cutsy-particle-up {
+  0%   { transform: translate(0, 0) scale(0.8); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate(var(--cutsy-drift, 0px), -240px) scale(1); opacity: 0; }
+}
+
+/* =========================================================
+   SUN / MOON CORNER
+   ========================================================= */
+
+.cutsy-sun-moon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 14px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+.cutsy-sun-moon.cutsy-daytime {
+  animation: cutsy-spin 18s linear infinite, cutsy-pulse 3s ease-in-out infinite;
+}
+.cutsy-sun-moon.cutsy-night {
+  animation: cutsy-float 5s ease-in-out infinite;
+}
+
+/* =========================================================
+   COLLAPSED BUBBLE
+   ========================================================= */
+
+#cutsy-bubble {
+  all: unset;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  font-size: 22px;
+  text-align: center;
+  line-height: 44px;
+  cursor: pointer;
+  z-index: 2147483646;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s cubic-bezier(.2,.8,.2,1);
+  animation: cutsy-bob 3s ease-in-out infinite;
+}
+#cutsy-bubble:hover { transform: scale(1.1); }
+#cutsy-bubble[data-theme="dark"] {
+  background: #1A171D;
+  color: #F0EAEC;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* =========================================================
+   LOADING STATE
+   ========================================================= */
+
+#cutsy-weather-widget.cutsy-state-loading .cutsy-temp,
+#cutsy-weather-widget.cutsy-state-loading .cutsy-meta,
+#cutsy-weather-widget.cutsy-state-loading .cutsy-emoji {
+  opacity: 0.4;
+}
+#cutsy-weather-widget.cutsy-state-loading .cutsy-mascot {
+  animation: cutsy-pulse 1.5s ease-in-out infinite;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes cutsy-fade-in {
+  0%   { transform: translateY(-10px) scale(0.96); opacity: 0; }
+  100% { transform: translateY(0) scale(1);         opacity: 1; }
+}
+@keyframes cutsy-soft-in {
+  0%   { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes cutsy-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+@keyframes cutsy-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+@keyframes cutsy-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes cutsy-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  #cutsy-weather-widget {
+    width: 200px;
+    font-size: 12px;
+  }
+  .cutsy-temp { font-size: 28px; }
+  .cutsy-emoji { font-size: 28px; }
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  #cutsy-weather-widget,
+  .cutsy-emoji,
+  .cutsy-sun-moon,
+  .cutsy-particle,
+  #cutsy-bubble {
+    animation: none !important;
+    transition: none !important;
+  }
+}

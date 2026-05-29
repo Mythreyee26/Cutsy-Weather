@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cutsy Weather 🌸</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main class="popup-card">
+    <header class="popup-header">
+      <span class="popup-mascot" id="mascot">(｡•ᴗ•｡)</span>
+      <div>
+        <h1>Cutsy Weather</h1>
+        <p class="popup-subtitle">soft skies, soft hearts ~</p>
+      </div>
+    </header>
+
+    <!-- 🔑 API key setup (only shown when no key is set) -->
+    <section class="popup-section key-section" id="key-not-set" hidden>
+      <p class="key-msg">🔑 paste your free OpenWeatherMap key to get started</p>
+      <div class="key-row">
+        <input
+          type="text"
+          id="key-input"
+          placeholder="your OpenWeatherMap api key"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="key-save" class="key-save-btn">save</button>
+      </div>
+      <a
+        class="key-link"
+        href="https://home.openweathermap.org/api_keys"
+        target="_blank"
+        rel="noopener"
+      >don't have one? get a free key →</a>
+    </section>
+
+    <!-- Small "key set ✓" indicator -->
+    <div class="key-status-row" id="key-set" hidden>
+      <span>🔑 key saved ✓</span>
+      <button id="key-change" class="key-change-btn">change</button>
+    </div>
+
+    <!-- 🌸 Live weather card -->
+    <section class="weather-card" id="weather-card">
+      <div class="weather-particles" aria-hidden="true"></div>
+
+      <div class="weather-state weather-state-loading" id="state-loading">
+        <div class="weather-spinner">(｡•ᴗ•｡)</div>
+        <div class="weather-loading-text">finding the sky 🌷</div>
+      </div>
+
+      <div class="weather-state weather-state-ok" id="state-ok" hidden>
+        <div class="weather-top">
+          <div class="weather-city" id="w-city">~</div>
+          <div class="weather-condition" id="w-condition">~</div>
+        </div>
+        <div class="weather-main">
+          <div class="weather-temp" id="w-temp">--°</div>
+          <div class="weather-emoji" id="w-emoji">☁️</div>
+        </div>
+        <div class="weather-mood" id="w-mood">~</div>
+        <div class="weather-meta">
+          <div class="weather-meta-item">
+            <span>💧</span><span id="w-humidity">--%</span>
+          </div>
+          <div class="weather-meta-item">
+            <span>🍃</span><span id="w-wind">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="weather-state weather-state-error" id="state-error" hidden>
+        <div class="weather-error-emoji" id="err-emoji">(´｡• ᵕ •｡`)</div>
+        <div class="weather-error-msg" id="err-msg">the sky is quiet ~</div>
+        <button id="retry-btn" class="popup-action-btn">try again 🌸</button>
+      </div>
+    </section>
+
+    <!-- 🎀 Settings -->
+    <section class="popup-section">
+      <label class="popup-row">
+        <span>🌸 Theme</span>
+        <div class="popup-toggle" id="theme-toggle">
+          <button data-value="light" class="popup-pill active">light</button>
+          <button data-value="dark" class="popup-pill">dark</button>
+        </div>
+      </label>
+    </section>
+
+    <section class="popup-actions">
+      <button id="refresh-btn" class="popup-action-btn">🔄 refresh</button>
+      <button id="reset-pos-btn" class="popup-action-btn">📍 reset position</button>
+    </section>
+
+    <footer class="popup-footer">
+      made with ♡ — also floats on every webpage 🌸
+    </footer>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>
